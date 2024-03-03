@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">HyperFocus 15 Puzzle</string>
+    <string name="victory_title">Vitória</string>
+    <string name="victory_message">Você venceu o jogo!</string>
+    <string name="restart">Reiniciar</string>
+    <string name="exit">Sair</string>
 </resources>

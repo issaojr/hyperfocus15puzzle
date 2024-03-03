@@ -9,29 +9,36 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.runtime.saveable.rememberSaveable
+
 import androidx.compose.ui.graphics.RectangleShape
+
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             MaterialTheme {
+                val puzzleViewModel: PuzzleViewModel by rememberSaveable { PuzzleViewModel() }
                 // A surface container using the 'background' color from the theme
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-                    PuzzleBoard()
+                    PuzzleBoard(puzzleViewModel)
                 }
             }
         }
     }
 }
 
+
 @Composable
-fun PuzzleBoard() {
-    val puzzleState = PuzzleState(4)
+fun PuzzleBoard(puzzleViewModel: PuzzleViewModel) {
+    val puzzleState = PuzzleState(4, puzzleViewModel)
     val gridSize = puzzleState.gridSize
 
     Column(
@@ -57,7 +64,9 @@ fun PuzzleBoard() {
 @Composable
 fun RowScope.TileView(number: Int) {
     Button(
-        onClick = { /* TODO: Implement tile click logic */ },
+        onClick = {
+            puzzleViewModel.onTileClick(number)
+                  },
         modifier = Modifier
             .aspectRatio(1f)
             .weight(1f),
@@ -65,7 +74,8 @@ fun RowScope.TileView(number: Int) {
         shape = RectangleShape
     ) {
         if (number != 0) {
-            Text(number.toString())
+            Text(number.toString(),
+                onTextLayout = {})
         }
     }
 }
